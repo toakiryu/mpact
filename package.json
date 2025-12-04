@@ -32,12 +32,11 @@
     "dist"
   ],
   "bin": {
-    "mpact": "bin/index.mjs"
+    "mpact": "bin/mpact.mjs"
   },
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "exports": {
-    ".": "./dist/index.mjs",
     "./defineConfig": {
       "types": "./dist/types/defineConfig.d.mts",
       "import": "./dist/types/defineConfig.mjs",
