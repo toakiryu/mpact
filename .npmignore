@@ -1,6 +1,7 @@
 *.md
 src
 **.tgz
+build.config.ts
 build.mjs
 print-pack-size.mjs
 tsconfig.build.json
