@@ -3,7 +3,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 /**
- * `mpact`のディレクトリ関連のヘルパー関数群
+ * ### Helper |`mpact`のディレクトリ関連のヘルパー関数群
+ * ---
+ * 依存ヘルパー: なし
  */
 export const dirHelperFunction = {
   /**

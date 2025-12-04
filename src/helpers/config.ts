@@ -3,7 +3,10 @@ import { helper } from "./main";
 import { pkgrc } from "../pkgrc";
 
 /**
- * `mpact`の設定関連のヘルパー関数群
+ * ### Helper |`mpact`の設定関連のヘルパー関数群
+ * ---
+ * 依存ヘルパー
+ * - `helper.dir`
  */
 export const configHelperFunction = {
   /**
