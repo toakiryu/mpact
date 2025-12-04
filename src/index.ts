@@ -14,7 +14,8 @@ program
   .command("test")
   .description("Display the current working directory or script directory")
   .action(async () => {
-    console.log(helper.config.hasConfigFile());
+    const configData = await helper.config.loadFile();
+    console.log("Config file data:", configData);
   });
 
 // 引数がない場合はヘルプを表示
@@ -23,5 +24,4 @@ if (!process.argv.slice(2).length) {
   process.exit(0);
 }
 
-// コマンドのパースと実行
 await program.parseAsync(process.argv);

@@ -19,26 +19,35 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "unbuild",
-    "stub": "unbuild --stub",
     "typecheck": "tsc --noEmit",
     "prepack": "pnpm build",
     "postpack": "node ./print-pack-size.mjs",
     "lint": "eslint",
     "format": "prettier --write .",
     "mpact:dev": "tsx ./src/index.ts",
-    "mpact:build": "node ./bin/mpact.mjs"
+    "mpact:build": "node ./dist/index.mjs"
   },
   "files": [
+    "bin",
     "dist"
   ],
+  "bin": {
+    "mpact": "bin/index.mjs"
+  },
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
-  "bin": {
-    "mpact": "bin/mpact.mjs"
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./defineConfig": {
+      "types": "./dist/types/defineConfig.d.mts",
+      "import": "./dist/types/defineConfig.mjs",
+      "require": "./dist/types/defineConfig.mjs"
+    }
   },
   "dependencies": {
-    "commander": "^14.0.2"
+    "commander": "^14.0.2",
+    "deepmerge": "^4.3.1",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
