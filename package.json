@@ -1,0 +1,46 @@
+{
+  "name": "mpact",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "",
+  "author": "toakiryu <toakiryu@gmail.com>",
+  "license": "MIT",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toakiryu/mpact.git"
+  },
+  "bugs": {
+    "url": "https://github.com/toakiryu/mpact/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "unbuild",
+    "stub": "unbuild --stub",
+    "typecheck": "tsc --noEmit",
+    "prepack": "pnpm build",
+    "postpack": "node ./print-pack-size.mjs",
+    "lint": "eslint",
+    "mpact": "tsx ./src/index.ts"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "bin": {
+    "mpact": "bin/mpact.mjs"
+  },
+  "dependencies": {
+    "commander": "^14.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "esbuild": "^0.27.1",
+    "eslint": "^9.39.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "unbuild": "^3.6.1"
+  }
+}

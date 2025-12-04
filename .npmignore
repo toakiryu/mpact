@@ -1,0 +1,7 @@
+*.md
+src
+**.tgz
+build.mjs
+print-pack-size.mjs
+tsconfig.build.json
+tsconfig.json

@@ -1,0 +1,117 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+    branches:
+      - "main"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Optional: force the publish dist-tag (e.g. latest, beta, rc)"
+        required: false
+
+jobs:
+  check-version:
+    name: Check package.json version
+    runs-on: ubuntu-latest
+    outputs:
+      package_version: ${{ steps.read_version.outputs.package_version }}
+      package_base: ${{ steps.read_version.outputs.package_base }}
+      package_prerelease: ${{ steps.read_version.outputs.package_prerelease }}
+      publish_tag: ${{ steps.read_version.outputs.publish_tag }}
+      changed: ${{ steps.read_version.outputs.changed }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+
+      - name: Setup Node.js (internal)
+        uses: toakiryu/workflows/setup-js@v1
+        with:
+          fetch-all: true
+
+      - id: read_version
+        name: Read and compare package.json version
+        run: |
+          set -e
+          if [ ! -f package.json ]; then
+            echo "package_version<<EOF" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            echo "package.json not found at repo root"
+            exit 1
+          fi
+
+          # current version
+          CUR=$(node -e "console.log(require('./package.json').version || '')")
+
+          # previous commit SHA (for push events)
+          PREV_SHA=''
+          if [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            PREV_SHA=${{ github.event.before }}
+          fi
+
+          PREV=''
+          if [ -n "$PREV_SHA" ]; then
+            # try to read package.json from previous commit
+            if git show "$PREV_SHA":package.json > /tmp/prev_package.json 2>/dev/null; then
+              PREV=$(node -e "console.log(require('/tmp/prev_package.json').version || '')") || PREV=''
+            fi
+          fi
+
+          # decide changed
+          CHANGED=false
+          if [ "$CUR" != "$PREV" ]; then
+            CHANGED=true
+          fi
+
+          # split prerelease tag: version could be like 1.2.3 or 1.2.3-beta.1
+          BASE="$CUR"
+          PRERELEASE=""
+          if [[ "$CUR" == *"-"* ]]; then
+            BASE=${CUR%%-*}
+            PRERELEASE=${CUR#*-}
+          fi
+
+          # publish tag: if prerelease exists, take the part before '.' (e.g. beta.1 -> beta), else 'latest'
+          PUBLISH_TAG="latest"
+          if [ -n "$PRERELEASE" ]; then
+            PUBLISH_TAG=${PRERELEASE%%.*}
+          fi
+
+          echo "package_version<<EOF" >> $GITHUB_OUTPUT
+          echo "$CUR" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "package_base<<EOF" >> $GITHUB_OUTPUT
+          echo "$BASE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "package_prerelease<<EOF" >> $GITHUB_OUTPUT
+          echo "$PRERELEASE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "publish_tag<<EOF" >> $GITHUB_OUTPUT
+          echo "$PUBLISH_TAG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "changed<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "Detected package.json version: $CUR (previous: $PREV) -> changed=$CHANGED, publish_tag=$PUBLISH_TAG"
+
+  release:
+    needs: check-version
+    if: ${{ github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/') || needs.check-version.outputs.changed == 'true' }}
+    uses: toakiryu/workflows/release/action.yml@v1
+    with:
+      publish: true
+      tag: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag && github.event.inputs.tag || needs.check-version.outputs.publish_tag }}
+    permissions:
+      contents: write
+      id-token: write
