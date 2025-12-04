@@ -29,7 +29,7 @@ async function main() {
   }
 
   const files = (await fs.promises.readdir(cwd)).filter((f) =>
-    f.endsWith(".tgz")
+    f.endsWith(".tgz"),
   );
   let target = null;
   if (expected && files.includes(expected)) {

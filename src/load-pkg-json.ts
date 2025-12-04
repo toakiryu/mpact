@@ -1,30 +1,19 @@
 import fs from "fs";
 import path from "path";
+import { helper } from "./helpers/main";
 
-export function loadPackageJsonFromDir(startDir: string) {
-  let cur = startDir;
-  while (true) {
-    const candidate = path.join(cur, "package.json");
-    try {
-      if (fs.existsSync(candidate)) {
-        const raw = fs.readFileSync(candidate, "utf8");
-        return JSON.parse(raw);
-      }
-    } catch (e) {
-      // ignore and continue
-    }
-    const parent = path.dirname(cur);
-    if (parent === cur) break;
-    cur = parent;
-  }
-  // fallback to cwd
+export function loadPackageJsonFromDir() {
   try {
-    const cwdCandidate = path.join(process.cwd(), "package.json");
-    if (fs.existsSync(cwdCandidate)) {
-      return JSON.parse(fs.readFileSync(cwdCandidate, "utf8"));
+    const candidate = helper.dir.selfroot();
+    if (!candidate) {
+      throw new Error("candidate not found");
+    }
+    const file = fs.existsSync(path.join(candidate, "package.json"));
+    if (file) {
+      const raw = fs.readFileSync(path.join(candidate, "package.json"), "utf8");
+      return JSON.parse(raw);
     }
   } catch (e) {
-    // ignore
+    throw new Error("package.json not found");
   }
-  throw new Error("package.json not found");
 }

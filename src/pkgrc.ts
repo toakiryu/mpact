@@ -1,12 +1,6 @@
-import { fileURLToPath } from "node:url";
-import path from "node:path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 import { loadPackageJsonFromDir } from "./load-pkg-json";
 
-const pkgJson = loadPackageJsonFromDir(__dirname);
+const pkgJson = loadPackageJsonFromDir();
 
 export interface Pkgrc {
   name: string;

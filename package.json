@@ -1,11 +1,14 @@
 {
   "name": "mpact",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "author": "toakiryu <toakiryu@gmail.com>",
   "license": "MIT",
-  "keywords": [],
+  "keywords": [
+    "cli",
+    "tool"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/toakiryu/mpact.git"
@@ -21,7 +24,9 @@
     "prepack": "pnpm build",
     "postpack": "node ./print-pack-size.mjs",
     "lint": "eslint",
-    "mpact": "tsx ./src/index.ts"
+    "format": "prettier --write .",
+    "mpact:dev": "tsx ./src/index.ts",
+    "mpact:build": "node ./bin/mpact.mjs"
   },
   "files": [
     "dist"
@@ -39,6 +44,7 @@
     "@types/node": "^24.10.1",
     "esbuild": "^0.27.1",
     "eslint": "^9.39.1",
+    "prettier": "^3.7.4",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "unbuild": "^3.6.1"
