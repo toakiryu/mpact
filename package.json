@@ -42,5 +42,6 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "unbuild": "^3.6.1"
-  }
+  },
+  "packageManager": "pnpm@10.20.0"
 }
