@@ -34,7 +34,7 @@
     "build-info.json"
   ],
   "bin": {
-    "mpact": "bin/index.mjs"
+    "mpact": "bin/mpact.mjs"
   },
   "exports": {
     ".": {
