@@ -1,3 +1,4 @@
+import { globSync } from "fs";
 import { defineBuildConfig } from "unbuild";
 
 /**
@@ -19,8 +20,9 @@ export default defineBuildConfig([
     },
   },
   {
-    name: "defineConfig",
-    entries: ["./src/types/defineConfig.ts"],
+    // ミニファイドビルド設定
+    name: "minified",
+    entries: globSync(["src/interface/*.ts"]),
     outDir: "dist",
     declaration: "node16",
     failOnWarn: false,
