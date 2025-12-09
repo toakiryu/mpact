@@ -3,8 +3,7 @@ import { extname } from "path";
 import { pathToFileURL } from "url";
 import deepmerge from "deepmerge";
 import { mpactrc } from "../../config";
-import helper from "../helper";
-
+import _helperDirFunction from "./dir";
 import { type DefineConfig, defineConfigSchema } from "../defineConfig";
 
 export interface ConfigHelperFunction_hasFileFile {
@@ -26,7 +25,7 @@ const __helperConfigFuncHasFile =
   async (): Promise<ConfigHelperFunction_hasFileResult> => {
     try {
       // カレントディレクトリを基準に確認
-      const cwd = helper.dir.cwd();
+      const cwd = _helperDirFunction.cwd();
       // 設定ファイル名のリストをループして存在確認
       for (let i = 0; i < mpactrc.configFile.name.length; i++) {
         const fileName = mpactrc.configFile.name[i];

@@ -30,7 +30,7 @@ Timestamp: ${data.timestamp}\n`);
 
 program
   .command("test")
-  .description("Display the current working directory or script directory")
+  .description("Display the resolved configuration data")
   .action(async () => {
     const configData = await helper.config.loadFile();
     console.log("Config file data:", configData);

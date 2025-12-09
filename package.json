@@ -26,7 +26,7 @@
     "lint": "eslint",
     "format": "prettier --write .",
     "mpact:dev": "tsx ./src/index.ts",
-    "mpact:build": "node ./dist/index.mjs"
+    "mpact:build": "node bin/mpact.mjs"
   },
   "files": [
     "bin",
@@ -55,6 +55,7 @@
     "@types/node": "^24.10.1",
     "esbuild": "^0.27.1",
     "eslint": "^9.39.1",
+    "glob": "^13.0.0",
     "prettier": "^3.7.4",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",

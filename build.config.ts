@@ -1,4 +1,4 @@
-import { globSync } from "fs";
+import { globSync } from "glob";
 import { defineBuildConfig } from "unbuild";
 
 /**
