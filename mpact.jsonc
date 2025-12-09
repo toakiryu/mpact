@@ -1,0 +1,45 @@
+{
+  "registry": {
+    ":npm": {
+      /* 
+      name: `@www/example` / version: `1.0.0`
+      demo: https://registry.npmjs.org/@www/example/-/example-1.0.0.tgz
+      */
+      "rule": "<https>:registry.npmjs.org/<@org/pkg>/-/<pkg>-<ver>.tgz"
+    },
+    "motion.dev": {
+      /*
+      name: `motion-plus` / version `1.0.0`
+      demo
+        url: https://api.motion.dev/registry?package=motion-plus&version=1.0.0&token=*****
+      */
+      "rule": "<https>:api.motion.dev/registry?package=<pkg>&version=<ver>&token=<:env.MOTION_TOKEN>"
+    },
+    ":example": {
+      /*
+      name: `www` / version `1.0.0`
+      demo
+        url: https://example.com/r/www/-/1.0.0
+        header { "Authorization": "Bearer ******" }
+      */
+      "rule": {
+        "url": "<https>:example.com/r/<pkg>/-/<ver>",
+        "header": {
+          "Authorization": "Bearer <:env.YOUR_TOKEN>"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "motion.dev": {
+      "motion-plus": "latest",
+      "motion-studio": "^1.5.7"
+    },
+    ":example": {
+      "www": "1.0.0"
+    },
+    ":npm": {
+      "sauthbase": "latest"
+    }
+  }
+}

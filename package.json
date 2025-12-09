@@ -1,7 +1,7 @@
 {
   "name": "mpact",
   "type": "module",
-  "version": "0.0.1-canary.1",
+  "version": "0.0.2",
   "description": "",
   "author": "toakiryu <toakiryu@gmail.com>",
   "license": "MIT",
@@ -18,29 +18,32 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "unbuild",
+    "build": "pnpm build:info && unbuild",
+    "build:info": "node .scripts/build-info.js",
     "typecheck": "tsc --noEmit",
     "prepack": "pnpm build",
     "postpack": "node ./print-pack-size.mjs",
     "lint": "eslint",
     "format": "prettier --write .",
     "mpact:dev": "tsx ./src/index.ts",
-    "mpact:build": "node ./dist/index.mjs"
+    "mpact:build": "node bin/mpact.mjs"
   },
   "files": [
     "bin",
-    "dist"
+    "dist",
+    "build-info.json"
   ],
   "bin": {
     "mpact": "bin/mpact.mjs"
   },
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
   "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
     "./defineConfig": {
-      "types": "./dist/types/defineConfig.d.mts",
-      "import": "./dist/types/defineConfig.mjs",
-      "require": "./dist/types/defineConfig.mjs"
+      "types": "./dist/interface/defineConfig.d.mts",
+      "import": "./dist/interface/defineConfig.mjs"
     }
   },
   "dependencies": {
@@ -52,6 +55,7 @@
     "@types/node": "^24.10.1",
     "esbuild": "^0.27.1",
     "eslint": "^9.39.1",
+    "glob": "^13.0.0",
     "prettier": "^3.7.4",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
